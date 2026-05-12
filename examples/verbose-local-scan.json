@@ -1,0 +1,79 @@
+[
+  {
+    "port": 7995,
+    "status": "closed",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 7996,
+    "status": "closed",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 7997,
+    "status": "closed",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 7998,
+    "status": "closed",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 7999,
+    "status": "closed",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 8000,
+    "status": "open",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 8001,
+    "status": "closed",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 8002,
+    "status": "closed",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 8003,
+    "status": "closed",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 8004,
+    "status": "closed",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 8005,
+    "status": "closed",
+    "service": "unknown",
+    "banner": null,
+    "error": null
+  }
+]

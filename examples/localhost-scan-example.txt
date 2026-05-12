@@ -1,0 +1,2 @@
+22/tcp closed ssh
+80/tcp closed http

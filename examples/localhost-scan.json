@@ -1,0 +1,16 @@
+[
+  {
+    "port": 22,
+    "status": "closed",
+    "service": "ssh",
+    "banner": null,
+    "error": null
+  },
+  {
+    "port": 80,
+    "status": "closed",
+    "service": "http",
+    "banner": null,
+    "error": null
+  }
+]
