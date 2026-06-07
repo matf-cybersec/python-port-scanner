@@ -39,6 +39,10 @@ class PortScanner:
         self.target_ip = ""
 
     def run(self) -> List[ScanResult]:
+        if not self.ports:
+            logging.warning("No ports were provided for scanning")
+            return []
+
         self.target_ip = utils.resolve_host(self.host)
         logging.info("Resolving host: %s", self.host)
         logging.info("Target address: %s", self.target_ip)
@@ -83,7 +87,13 @@ class PortScanner:
             timeout=self.timeout,
             banner_grab=self.banner_grab,
         )
-        status = "open" if port_data.is_open else "closed"
+        if port_data.is_open:
+            status = "open"
+        elif port_data.error == "timeout":
+            status = "filtered"
+        else:
+            status = "closed"
+
         service = utils.get_service_name(port)
 
         if self.verbose:

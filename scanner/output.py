@@ -23,15 +23,29 @@ from scanner.scanner import ScanResult
 class OutputManager:
     def print_summary(self, results: Iterable[ScanResult]) -> None:
         open_ports = 0
-        for result in results:
+        closed_ports = 0
+        filtered_ports = 0
+        error_count = 0
+        result_list = list(results)
+
+        for result in result_list:
             line = self._format_result(result)
             print(line)
             if result.status == "open":
                 open_ports += 1
+            elif result.status == "closed":
+                closed_ports += 1
+            elif result.status == "filtered":
+                filtered_ports += 1
+            if result.error:
+                error_count += 1
 
-        total_ports = len(list(results))
+        total_ports = len(result_list)
         print()
-        print(f"Scanned {total_ports} ports, {open_ports} open")
+        print(
+            f"Scanned {total_ports} ports: {open_ports} open, {closed_ports} closed, "
+            f"{filtered_ports} filtered, {error_count} with errors"
+        )
 
     def export(self, results: Iterable[ScanResult], export_format: str, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -52,7 +66,8 @@ class OutputManager:
             status_text = f"{Fore.YELLOW}[{result.status.upper()}]{Style.RESET_ALL}"
 
         banner_text = f" - {result.banner}" if result.banner else ""
-        return f"{status_text} {result.port}/tcp - {result.service}{banner_text}"
+        error_text = f" | error: {result.error}" if result.error else ""
+        return f"{status_text} {result.port}/tcp - {result.service}{banner_text}{error_text}"
 
     def _export_json(self, results: Iterable[ScanResult], path: Path) -> None:
         serialized = [
