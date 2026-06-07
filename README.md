@@ -107,25 +107,5 @@ python-port-scanner/
 ## Changelog
 
 See `CHANGELOG.md` for the full list of recent upgrades and release notes.
-
-## Publishing to GitHub
-
-1. Stage the updated files:
-   ```bash
-   git add README.md CHANGELOG.md main.py scanner/network.py scanner/scanner.py scanner/output.py scanner/utils.py
-   ```
-
-````
-2. Commit with a descriptive message:
-   ```bash
-git commit -m "Document scanner upgrades and add changelog for CLI, export, timeout, and threading improvements"
-````
-
-3. Push the branch to GitHub:
-   ```bash
-   git push origin your-branch-name
-   ```
-
-```
 4. Create a Pull Request or release on GitHub and use the changelog entries as release notes.
 ```
