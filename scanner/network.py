@@ -1,9 +1,10 @@
 """Network operations for TCP connect scan logic."""
 
+import errno
 import logging
 import socket
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Optional
 
 from scanner.banner import grab_banner
 
@@ -22,6 +23,18 @@ def create_tcp_socket(timeout: float) -> socket.socket:
     return sock
 
 
+def _format_connect_error(errno_code: int) -> str:
+    if errno_code == errno.ECONNREFUSED:
+        return "connection refused"
+    if errno_code == errno.ETIMEDOUT:
+        return "timeout"
+    if errno_code == errno.EHOSTUNREACH:
+        return "host unreachable"
+    if errno_code == errno.ENETUNREACH:
+        return "network unreachable"
+    return errno.errorcode.get(errno_code, str(errno_code))
+
+
 def scan_port(
     host: str,
     port: int,
@@ -34,7 +47,8 @@ def scan_port(
     try:
         result = sock.connect_ex((host, port))
         if result != 0:
-            return PortCheckResult(port=port, is_open=False, banner=None, error=None)
+            error_text = _format_connect_error(result)
+            return PortCheckResult(port=port, is_open=False, banner=None, error=error_text)
 
         banner_data = None
         if banner_grab:

@@ -61,6 +61,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output file path when exporting results",
     )
     parser.add_argument(
+        "--no-color",
+        action="store_true",
+        help="Disable ANSI color output",
+    )
+    parser.add_argument(
         "--verbose",
         action="store_true",
         help="Enable verbose logging output",
@@ -70,10 +75,10 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main() -> int:
-    colorama_init(strip=False)
     parser = build_parser()
     args = parser.parse_args()
 
+    colorama_init(strip=args.no_color)
     log_level = logging.DEBUG if args.verbose else logging.INFO
     setup_logger(log_level)
 
@@ -86,6 +91,9 @@ def main() -> int:
     if args.export and not args.output:
         logging.error("Export mode requires --output file path")
         return 1
+
+    if not args.fast and args.threads > 1:
+        logging.debug("Thread count is ignored when fast scan mode is disabled")
 
     output_manager = OutputManager()
     scanner = PortScanner(
@@ -110,6 +118,9 @@ def main() -> int:
         return 0
     except KeyboardInterrupt:
         logging.warning("Scan interrupted by user (Ctrl+C)")
+        return 1
+    except ValueError as exc:
+        logging.error(str(exc))
         return 1
     except Exception as exc:
         logging.exception("Unexpected error during scan: %s", exc)
