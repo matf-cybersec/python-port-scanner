@@ -1,28 +1,31 @@
 # Python TCP Port Scanner
 
-A professional TCP port scanner with clean architecture, threaded scanning, and export support. This project is ideal for cybersecurity learners, pentest tool prototypes, and anyone who wants a reliable command-line scanner with JSON/TXT export.
+A modular TCP port scanner built with Python, featuring threaded scanning, optional banner grabbing, service identification, and JSON/TXT export. Developed as a cybersecurity learning project focused on network reconnaissance and Python development.
 
 ## Features
 
-- Scan a single host by IP or hostname
-- Support for comma-separated ports and port ranges (for example: `22,80,443,8000-8100`)
-- Configurable TCP timeout for accurate results
-- Optional banner grabbing for open ports
-- Built-in service identification for common ports
-- Colored CLI output with optional `--no-color`
-- Fast thread-based scanning with `--fast` and `--threads`
-- JSON and TXT export of scan results
-- Reliable error handling for invalid input and unresolved hosts
-- Verbose logging mode for debugging and scan details
+- Scan a single host by IP address or hostname.
+- Support for comma-separated ports and port ranges (e.g., `22,80,443,8000-8100`).
+- Configurable TCP connection timeout.
+- Optional banner grabbing for open ports.
+- Built-in service identification for common ports.
+- Colored CLI output with optional `--no-color` flag.
+- Thread-based scanning with `--fast` and configurable `--threads`.
+- JSON and TXT export of scan results.
+- Input validation for port ranges, positive timeout values, and positive thread counts.
+- Error handling for invalid input and unresolved hosts.
+- Verbose logging with `--verbose`.
 
 ## Installation
 
 ```bash
-git clone https://github.com/username/python-port-scanner.git
+git clone https://github.com/matf-cybersec/python-port-scanner.git
 cd python-port-scanner
+
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+
+python -m pip install -r requirements.txt
 ```
 
 ## Usage
@@ -31,29 +34,41 @@ pip install -r requirements.txt
 python main.py --host scanme.nmap.org --ports 22,80,443 --timeout 1.5 --fast --banner --export json --output results.json
 ```
 
-### CLI options
+## CLI Options
 
-- `--host`: hostname or IP address to scan
-- `--ports`: comma-separated ports and ranges, e.g. `22,80,443,8000-8100`
-- `--timeout`: socket timeout in seconds
-- `--banner`: enable optional banner grabbing for open ports
-- `--fast`: enable threaded scanning
-- `--threads`: number of worker threads when using fast scan mode
-- `--export`: export format, either `json` or `txt`
-- `--output`: export file path
-- `--verbose`: enable debug logging
-- `--no-color`: disable ANSI colors in output
+| Argument | Description |
+|---|---|
+| `--host` | Hostname or IP address to scan (required). |
+| `--ports` | Comma-separated ports and ranges. |
+| `--timeout` | TCP connection timeout in seconds; must be greater than zero. |
+| `--banner` | Enable optional banner grabbing. |
+| `--fast` | Enable threaded scanning. |
+| `--threads` | Number of worker threads; must be positive and only applies with `--fast`. |
+| `--export` | Export format: `json` or `txt`. |
+| `--output` | Export file path; required when using `--export`. |
+| `--verbose` | Enable debug logging. |
+| `--no-color` | Disable ANSI color output. |
 
-### Examples
+## Examples
 
 ```bash
-python main.py --host 127.0.0.1 --ports 1-1024 --timeout 1.0 --fast
+# Scan common ports
+python main.py --host 127.0.0.1 --ports 22,80,443
+
+# Scan a port range using threads
+python main.py --host 127.0.0.1 --ports 1-1024 --fast --threads 20
+
+# Grab banners and export results
 python main.py --host example.com --ports 22,80,443 --banner --export txt --output scan.txt
+
+# Enable verbose logging
 python main.py --host 192.168.1.10 --ports 20-25 --verbose
+
+# Export results to JSON
 python main.py --host 192.168.1.5 --ports 22,80,443 --export json --output ./results/scan.json
 ```
 
-## Example output
+## Example Output
 
 ```text
 [INFO] Resolving host: example.com
@@ -67,21 +82,17 @@ Scanned 3 ports: 2 open, 1 closed, 0 filtered, 0 with errors
 [INFO] Results saved to results.json
 ```
 
-## Export formats
+## Export Formats
 
-- JSON export includes port, status, service, banner, and error details.
-- TXT export lists one port per line with status, service, and optional banner/error data.
+- **JSON:** Includes port, status, service, banner, and error details.
+- **TXT:** Lists scanned ports with their status, service, and optional banner or error information.
 
-## Screenshots
-
-![Scan results](screenshots/scan-results.jpg)
-![Verbose scan](screenshots/verbose-scan.jpg)
-
-## Project structure
+## Project Structure
 
 ```text
 python-port-scanner/
 ├── README.md
+├── CHANGELOG.md
 ├── requirements.txt
 ├── .gitignore
 ├── scanner/
@@ -107,5 +118,25 @@ python-port-scanner/
 ## Changelog
 
 See `CHANGELOG.md` for the full list of recent upgrades and release notes.
+
+## Publishing to GitHub
+
+1. Stage the updated files:
+   ```bash
+   git add README.md CHANGELOG.md main.py scanner/network.py scanner/scanner.py scanner/output.py scanner/utils.py
+   ```
+
+````
+2. Commit with a descriptive message:
+   ```bash
+git commit -m "Document scanner upgrades and add changelog for CLI, export, timeout, and threading improvements"
+````
+
+3. Push the branch to GitHub:
+   ```bash
+   git push origin your-branch-name
+   ```
+
+```
 4. Create a Pull Request or release on GitHub and use the changelog entries as release notes.
 ```

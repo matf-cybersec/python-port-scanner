@@ -3,7 +3,6 @@
 
 import argparse
 import logging
-import sys
 from pathlib import Path
 
 try:
@@ -16,6 +15,35 @@ from scanner.output import OutputManager
 from scanner.scanner import PortScanner
 from scanner.utils import parse_port_list, setup_logger
 
+def positive_float(value: str) -> float:
+    try:
+        number = float(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            f"Invalid number: {value}"
+        )
+
+    if number <= 0:
+        raise argparse.ArgumentTypeError(
+            "Timeout must be greater than zero."
+        )
+
+    return number
+
+def positive_int(value: str) -> int:
+    try:
+        number = int(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            f"Invalid integer: {value}"
+        )
+
+    if number <= 0:
+        raise argparse.ArgumentTypeError(
+            "Thread count must be greater than zero."
+        )
+
+    return number
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -30,11 +58,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Ports to scan as a comma-separated list and ranges (for example: 22,80,443,8000-8100)",
     )
     parser.add_argument(
-        "--timeout",
-        type=float,
-        default=1.0,
-        help="Socket timeout for TCP connection attempts in seconds",
-    )
+    "--timeout",
+    type=positive_float,
+    default=1.0,
+    help="Socket timeout for TCP connection attempts in seconds",
+)
     parser.add_argument(
         "--banner",
         action="store_true",
@@ -47,7 +75,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--threads",
-        type=int,
+        type=positive_int,
         default=20,
         help="Number of threads to use in fast scan mode",
     )

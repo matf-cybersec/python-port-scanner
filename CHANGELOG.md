@@ -10,6 +10,7 @@ All notable changes to this project are tracked in this file.
 - Fast scan mode via `--fast` and configurable worker threads using `--threads`.
 - Export support for `json` and `txt` formats using `--export` and `--output`.
 - Detailed scan summary counts for open, closed, filtered, and error results.
+- Positive-value validation for `--timeout` and `--threads`, rejecting zero and negative values.
 - Improved CLI validation and error handling for invalid port input and missing output paths.
 
 ### Changed
